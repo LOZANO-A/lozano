@@ -22,3 +22,4 @@ jobs:
         while IFS= read -r file; do
           php -l "$file" # Exécute la commande 'php -l' sur chaque fichier PHP
         done < php_files.txt
+##
