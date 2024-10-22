@@ -13,7 +13,7 @@ jobs:
     - name: Checkout repository # Étape pour récupérer le code du dépôt
       uses: actions/checkout@v2 # Utilise l'action 'checkout' pour cloner le dépôt
 
-    - name: Find PHP files # Étape pour trouver tous les fichiers PHP
+    - name: Trouve_et_liste_PHP_files # Étape pour trouver tous les fichiers PHP
       run: |
         find . -name "*.php" > php_files.txt # Trouve les fichiers PHP et les liste dans 'php_files.txt'
 
