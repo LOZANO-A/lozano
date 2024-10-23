@@ -33,4 +33,4 @@ jobs:
 
     - name: Build_Docker
       run: |
-        docker build -t user/nginx_junia:latest
+        docker build -t docker_nginx_lzn .
