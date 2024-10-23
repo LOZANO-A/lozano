@@ -6,19 +6,31 @@ on:
       - develop # Le workflow se déclenche sur un push vers la branche 'develop'
 
 jobs:
-  lint: # Job appelé 'lint'
-    runs-on: self-hosted # Le job s'exécute sur un runner self-hosted
+  lint:                                      # Job appelé 'lint'
+    runs-on: self-hosted                     # Le job s'exécute sur un runner self-hosted
 
     steps:
-    - name: Checkout repository # Étape pour récupérer le code du dépôt
-      uses: actions/checkout@v2 # Utilise l'action 'checkout' pour cloner le dépôt
+    - name: Checkout repository              # Étape pour récupérer le code du dépôt
+      uses: actions/checkout@v2              # Utilise l'action 'checkout' pour cloner le dépôt
 
-    - name: Trouve_et_liste_PHP_files # Étape pour trouver tous les fichiers PHP
+    - name: Trouve_et_liste_PHP_files        # Étape pour trouver tous les fichiers PHP
       run: |
         find . -name "*.php" > php_files.txt # Trouve les fichiers PHP et les liste dans 'php_files.txt'
 
-    - name: Lint PHP files # Étape pour vérifier la syntaxe des fichiers PHP
+    - name: Verif_syntax_PHP_files           # Étape pour vérifier la syntaxe des fichiers PHP
       run: |
         while IFS= read -r file; do
-          php -l "$file" # Exécute la commande 'php -l' sur chaque fichier PHP
+          php -l "$file"                     # Exécute la commande 'php -l' sur chaque fichier PHP
         done < php_files.txt
+
+  build:                                     # Job appelé 'build'
+    runs-on: self-hosted                     # S'exécute sur le runner self-hosted
+    needs: lint                              # dépend du job 'lint', se lance après
+
+    steps:
+    - name: Checkout repository              # Étape pour récupérer le code du dépôt
+      uses: actions/checkout@v2              # Utilise l'action 'checkout' pour cloner le dépôt
+
+    - name: Build_Docker
+      run: |
+        docker build -t user/nginx_junia:latest
