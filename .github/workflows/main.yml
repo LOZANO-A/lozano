@@ -31,6 +31,19 @@ jobs:
     - name: Checkout repository              # Étape pour récupérer le code du dépôt
       uses: actions/checkout@v2              # Utilise l'action 'checkout' pour cloner le dépôt
 
-    - name: Build_Docker
+    - name: Creation_img_nginx
       run: |
         docker build -t docker_nginx_lzn .
+
+  push:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: push_img_to_dockerHub
+      run: |
+        docker tag docker_nginx_lzn ${{ secrets.DOCKER_USERNAME }}/docker_nginx_lzn:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/docker_nginx_lzn:latest
